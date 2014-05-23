@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+<link rel="stylesheet" href="/csshide1.css"/>
+<link rel="stylesheet" href="/csshide2.css"/>
+<link rel="stylesheet" href="/csshide3.css"/>
+<link rel="stylesheet" href="/csshide4.css"/>
+<style></style >
+<link rel="stylesheet" href="/abprule.css"/>
+<style></style  >
+<style></style>
+<script type="text/javascript">window.onerror=function(){return true;}</script></head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+坐在电脑前，思绪着自己从呱呱坠地到现在，有很多东西，在脑子里面闪现，自觉得有必要将它们记录下来，待大脑不太好使的时候，可以翻出来晾一下，也好做一个回忆。
+自己算一个慵懒之人，早在前年快要毕业离校之际，就曾想记录自己的学生时代，可是却因为各种理由说服自己的懒惰，让其肆无忌惮，拖延至今。
+题目曰“一横一竖”，是近些日子加班回来路上想起的，一横一竖，合起来就是个“十”，可以算作自己记录的年限，以十年为一阶段，恰好是两个十年，在上幼儿园之前的事情却已然记不起来，遂剔除掉五至六年。
+再者，一横一竖也可看作是人生的一个轨迹，横竖相交谓之坐标，以时间为横坐标，以事情为纵坐标，构成自己的点，横跨二十余载，就是自己的轨迹。
+不知从何时起，自己写东西，有点随意过头了，想到哪写到哪，以上这些就将就算作前言吧。
+
+
+写于2013-05-04，距今已一年多！
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>坐在电脑前，思绪着自己从呱呱坠地到现在，有很多东西，在脑子里面闪现，自觉得有必要将它们记录下来，待大脑不太好使的时候，可以翻出来晾一下，也好做一个回忆。
+自己算一个慵懒之人，早在前年快要毕业离校之际，就曾想记录自己的学生时代，可是却因为各种理由说服自己的懒惰，让其肆无忌惮，拖延至今。
+题目曰“一横一竖”，是近些日子加班回来路上想起的，一横一竖，合起来就是个“十”，可以算作自己记录的年限，以十年为一阶段，恰好是两个十年，在上幼儿园之前的事情却已然记不起来，遂剔除掉五至六年。
+再者，一横一竖也可看作是人生的一个轨迹，横竖相交谓之坐标，以时间为横坐标，以事情为纵坐标，构成自己的点，横跨二十余载，就是自己的轨迹。
+不知从何时起，自己写东西，有点随意过头了，想到哪写到哪，以上这些就将就算作前言吧。</p>
+
+<p>写于2013-05-04，距今已一年多！</p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "newstart.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
